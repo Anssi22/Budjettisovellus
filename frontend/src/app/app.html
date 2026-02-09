@@ -1,0 +1,10 @@
+<h1>Budjettisovellus</h1>
+
+<app-summary [transactions]="transactions"></app-summary>
+
+<app-budget-form (created)="add($event)"></app-budget-form>
+
+<app-budget-list
+  [transactions]="transactions"
+  (deleteRequested)="remove($event)">
+</app-budget-list>

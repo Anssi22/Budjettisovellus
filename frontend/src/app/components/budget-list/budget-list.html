@@ -1,0 +1,10 @@
+<h2>Tapahtumat</h2>
+
+<ul>
+  <li *ngFor="let t of transactions">
+    {{ t.date }} — {{ t.title }} — {{ t.type }} — {{ t.amount }}
+    <button (click)="delete(t.id)">Poista</button>
+  </li>
+</ul>
+
+<p *ngIf="transactions.length === 0">Ei tapahtumia.</p>
