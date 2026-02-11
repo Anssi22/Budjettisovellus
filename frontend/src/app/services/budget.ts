@@ -1,25 +1,33 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Transaction } from '../models/transaction';
 
 @Injectable({ providedIn: 'root' })
 export class BudgetService {
-  // TODO (backend): korvaa nämä HTTP-kutsuilla Express API:in (GET/POST/PUT/DELETE /api/transactions)
-  // TODO (backend): kun MongoDB käytössä, Transaction saa id:n backendiltä (esim. _id)
+  private http = inject(HttpClient);
 
-  private transactions: Transaction[] = [
-    { id: '1', title: 'Palkka', amount: 2200, type: 'income', date: '2026-02-01' },
-    { id: '2', title: 'Vuokra', amount: 750, type: 'expense', date: '2026-02-02' },
-  ];
+  // Proxy hoitaa localhost:3000, joten baseUrl voi olla suhteellinen
+  private baseUrl = '/api/transactions';
 
-  getAll(): Transaction[] {
-    return this.transactions;
+  // READ
+  getAll(): Observable<Transaction[]> {
+    return this.http.get<Transaction[]>(this.baseUrl);
   }
 
-  add(tx: Transaction): void {
-    this.transactions = [tx, ...this.transactions];
+  // CREATE
+  add(tx: Transaction): Observable<Transaction> {
+    return this.http.post<Transaction>(this.baseUrl, tx);
   }
 
-  remove(id: string): void {
-    this.transactions = this.transactions.filter(t => t.id !== id);
+  // UPDATE
+  update(tx: Transaction): Observable<Transaction> {
+    const id = tx._id;
+    return this.http.put<Transaction>(`${this.baseUrl}/${id}`, tx);
+  }
+
+  // DELETE
+  remove(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

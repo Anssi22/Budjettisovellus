@@ -9,11 +9,19 @@ import { Transaction } from '../../models/transaction';
   templateUrl: './budget-list.html',
   styleUrl: './budget-list.css',
 })
+
 export class BudgetListComponent {
   @Input() transactions: Transaction[] = [];
+
   @Output() deleteRequested = new EventEmitter<string>();
+  @Output() editRequested = new EventEmitter<Transaction>();
 
   delete(id: string) {
     this.deleteRequested.emit(id);
   }
+
+  edit(tx: Transaction) {
+    this.editRequested.emit(tx);
+  }
 }
+

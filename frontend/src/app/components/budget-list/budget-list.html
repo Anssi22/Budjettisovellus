@@ -2,8 +2,10 @@
 
 <ul>
   <li *ngFor="let t of transactions">
-    {{ t.date }} — {{ t.title }} — {{ t.type }} — {{ t.amount }}
-    <button (click)="delete(t.id)">Poista</button>
+    {{ t.title }} — {{ t.amount }}
+    <button (click)="edit(t)">Muokkaa</button>
+    <button (click)="delete(t._id!)">Poista</button>
+
   </li>
 </ul>
 
