@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const transactionSchema = new mongoose.Schema(
     {   
         title: { type: String, required: true, trim: true },
-        amount: { type: Number, required: true },
+        amountCents: { type: Number, required: true },
         type: { type: String, required: true, enum: ["income", "expense"] },
         date: { type: String, required: true },
     },

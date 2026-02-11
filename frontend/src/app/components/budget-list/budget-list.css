@@ -1,0 +1,62 @@
+.tx-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.tx-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+}
+
+.tx-main {
+  display: grid;
+  gap: 4px;
+}
+
+.tx-title {
+  font-weight: 600;
+}
+
+.tx-date {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.tx-right {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+}
+
+.tx-amount {
+  font-variant-numeric: tabular-nums;
+}
+
+.tx-amount.income {
+  color: #2e7d32;
+}
+
+.tx-amount.expense {
+  color: #c62828;
+}
+
+.tx-actions {
+  display: flex;
+  gap: 8px;
+}
+
+button.danger {
+  background: #c62828;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+}

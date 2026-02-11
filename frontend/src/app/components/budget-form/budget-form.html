@@ -1,49 +1,36 @@
-<!-- Otsikko vaihtuu sen mukaan ollaanko edit-tilassa vai lisäystilassa.
-     editing tulee komponentin .ts:stä (@Input editing: Transaction | null). -->
-<h2>{{ editing ? 'Muokkaa tapahtumaa' : 'Lisää tapahtuma' }}</h2>
+<h2 class="form-title">{{ editing ? 'Muokkaa tapahtumaa' : 'Lisää tapahtuma' }}</h2>
 
-<!-- [formGroup]="form"
-     - Property binding: sitoo tämän <form>-elementin Angularin FormGroup-olioon.
-     - form on BudgetFormComponentin .ts:ssä luotu reactive form.
-     (ngSubmit)="submit()"
-     - Event binding: kun formi submitataan (esim. painetaan submit-nappia),
-       Angular kutsuu submit()-metodin komponentista. -->
-<form [formGroup]="form" (ngSubmit)="submit()">
+<form class="tx-form" [formGroup]="form" (ngSubmit)="submit()">
+  <label class="field">
+    <span class="label">Otsikko</span>
+    <input class="control" placeholder="Esim. Kahvi" formControlName="title" />
+  </label>
 
-  <!-- formControlName="title"
-       - Yhdistää tämän inputin form groupin 'title' -kontrolliin (reactive forms). -->
-  <input placeholder="Otsikko" formControlName="title" />
+  <label class="field">
+    <span class="label">Summa (€)</span>
+    <input class="control" type="number" step="0.01" min="0" formControlName="amount" />
+  </label>
 
-  <!-- type="number" step="0.01"
-       - Normaalia HTML:ää: numero-kenttä ja desimaalit sallittu.
-       formControlName="amount" sitoo kentän reactive formiin. -->
-  <input type="number" step="0.01" formControlName="amount" />
+  <label class="field">
+    <span class="label">Tyyppi</span>
+    <select class="control" formControlName="type">
+      <option value="income">Tulo</option>
+      <option value="expense">Meno</option>
+    </select>
+  </label>
 
-  <!-- select myös sidotaan formiin formControlName:lla -->
-  <select formControlName="type">
-    <option value="income">Tulo</option>
-    <option value="expense">Meno</option>
-  </select>
+  <label class="field">
+    <span class="label">Päivä</span>
+    <input class="control" type="date" formControlName="date" />
+  </label>
 
-  <!-- type="date" + formControlName="date"
-       - date-arvon formaatti on käytännössä 'YYYY-MM-DD' -->
-  <input type="date" formControlName="date" />
+  <div class="actions">
+    <button class="btn primary" type="submit" [disabled]="form.invalid">
+      {{ editing ? 'Tallenna' : 'Lisää' }}
+    </button>
 
-  <!-- type="submit"
-       - Tämä nappi submittaa formin.
-       [disabled]="form.invalid"
-       - Property binding: nappi on disabled jos reactive form on invalid. -->
-  <button type="submit" [disabled]="form.invalid">
-    <!-- Napin teksti vaihtuu edit-tilan mukaan -->
-    {{ editing ? 'Tallenna' : 'Lisää' }}
-  </button>
-
-  <!-- *ngIf="editing"
-       - Rakenteellinen direktiivi: elementti luodaan DOMiin vain jos ehto on true.
-       - Tässä: "Peru" näkyy vain, jos editing ei ole null (eli muokataan).
-       (click)="cancel()"
-       - Event binding: kutsuu cancel()-metodin komponentista. -->
-  <button type="button" *ngIf="editing" (click)="cancel()">
-    Peru
-  </button>
+    <button class="btn" type="button" *ngIf="editing" (click)="cancel()">
+      Peru
+    </button>
+  </div>
 </form>

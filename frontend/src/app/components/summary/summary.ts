@@ -27,14 +27,39 @@ export class SummaryComponent implements AfterViewInit, OnChanges, OnDestroy {
   private chart: Chart | null = null;
   private viewReady = false;
 
-  get incomeTotal() {
-    return this.transactions.filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+  // Valuuttaformaattaus: 50000 -> "500,00 €" [web:541]
+  private fmt = new Intl.NumberFormat('fi-FI', { style: 'currency', currency: 'EUR' });
+
+  private fmtSigned = new Intl.NumberFormat('fi-FI', {
+    style: 'currency',
+    currency: 'EUR',
+    signDisplay: 'exceptZero', // tai 'always' jos haluat myös +0,00 € [web:541]
+  });
+
+  eur(cents: number): string {
+    return this.fmt.format(cents / 100);
   }
-  get expenseTotal() {
-    return this.transactions.filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+
+  eurSigned(cents: number): string {
+    return this.fmtSigned.format(cents / 100);
   }
-  get balance() {
-    return this.incomeTotal - this.expenseTotal;
+
+
+  // Totals sentteinä
+  get incomeTotalCents(): number {
+    return this.transactions
+      .filter(t => t.type === 'income')
+      .reduce((s, t) => s + t.amountCents, 0);
+  }
+
+  get expenseTotalCents(): number {
+    return this.transactions
+      .filter(t => t.type === 'expense')
+      .reduce((s, t) => s + t.amountCents, 0);
+  }
+
+  get balanceCents(): number {
+    return this.incomeTotalCents - this.expenseTotalCents;
   }
 
   ngAfterViewInit(): void {
@@ -44,10 +69,7 @@ export class SummaryComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Input voi muuttua ennen kuin canvas on olemassa → odota viewReady
     if (!this.viewReady) return;
-
-    // Jos chart on jo luotu, vain päivitä data
     this.updateChart();
   }
 
@@ -66,7 +88,12 @@ export class SummaryComponent implements AfterViewInit, OnChanges, OnDestroy {
       type: 'doughnut',
       data: {
         labels: ['Tulot', 'Menot'],
-        datasets: [{ data: [0, 0] }],
+        datasets: [
+          {
+            data: [0, 0],
+            backgroundColor: ['#2e7d32', '#c62828'],
+          },
+        ],
       },
       options: {
         responsive: true,
@@ -78,7 +105,11 @@ export class SummaryComponent implements AfterViewInit, OnChanges, OnDestroy {
   private updateChart(): void {
     if (!this.chart) return;
 
-    this.chart.data.datasets[0].data = [this.incomeTotal, this.expenseTotal];
-    this.chart.update(); // päivitä Chart.js [web:247]
+    // Chartiin eurot (helpompi lukea)
+    const incomeEuros = this.incomeTotalCents / 100;
+    const expenseEuros = this.expenseTotalCents / 100;
+
+    this.chart.data.datasets[0].data = [incomeEuros, expenseEuros];
+    this.chart.update(); // Chart.js update [web:569]
   }
 }

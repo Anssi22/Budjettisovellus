@@ -1,11 +1,22 @@
 <h2>Tapahtumat</h2>
 
-<ul>
-  <li *ngFor="let t of transactions">
-    {{ t.title }} — {{ t.amount }}
-    <button (click)="edit(t)">Muokkaa</button>
-    <button (click)="delete(t._id!)">Poista</button>
+<ul class="tx-list">
+  <li class="tx-row" *ngFor="let t of transactions">
+    <div class="tx-main">
+      <div class="tx-title">{{ t.title }}</div>
+      <div class="tx-date">{{ t.date }}</div>
+    </div>
 
+    <div class="tx-right">
+      <div class="tx-amount" [class.expense]="t.type === 'expense'" [class.income]="t.type === 'income'">
+        {{ signedEur(t) }}
+      </div>
+
+      <div class="tx-actions">
+        <button type="button" (click)="edit(t)">Muokkaa</button>
+        <button type="button" class="danger" (click)="delete(t._id!)">Poista</button>
+      </div>
+    </div>
   </li>
 </ul>
 

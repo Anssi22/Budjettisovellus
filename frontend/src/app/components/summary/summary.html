@@ -1,8 +1,27 @@
-<h2>Yhteenveto</h2>
-<p>Tulot: {{ incomeTotal }}</p>
-<p>Menot: {{ expenseTotal }}</p>
-<p>Saldo: {{ balance }}</p>
+<section class="summary">
+  <header class="summary-head">
+    <h2 class="summary-title">Yhteenveto</h2>
+  </header>
+  
+  <div class="summary-grid">
+    <div class="metric income">
+      <div class="label">Tulot</div>
+      <div class="value">{{ eur(incomeTotalCents) }}</div>
+    </div>
+    
+    <div class="metric expense">
+      <div class="label">Menot</div>
+      <div class="value">{{ eur(expenseTotalCents) }}</div>
+    </div>
 
-<div style="height:180px;">
-  <canvas #chartCanvas></canvas>
-</div>
+    <div class="summary-balance">
+      <div class="label">Saldo</div>
+      <div class="value" [class.pos]="balanceCents > 0" [class.neg]="balanceCents < 0">
+        {{ eurSigned(balanceCents) }}
+      </div>
+    </div>
+    <div class="chart">
+      <canvas #chartCanvas></canvas>
+    </div>
+  </div>
+</section>

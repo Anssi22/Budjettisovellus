@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 import { BudgetListComponent } from './components/budget-list/budget-list';
 import { SummaryComponent } from './components/summary/summary';
@@ -19,7 +19,10 @@ export class AppComponent implements OnInit {
   transactions: Transaction[] = [];
   editing: Transaction | null = null;
 
-  constructor(private budget: BudgetService) {}
+  constructor(
+    private budget: BudgetService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.reload();
@@ -29,11 +32,15 @@ export class AppComponent implements OnInit {
     this.budget.getAll().subscribe((list: Transaction[]) => {
       console.log('transactions from API:', list);
       this.transactions = list;
+
+      // Zoneless: pyydä Angularia renderöimään uusi state [web:534]
+      this.cdr.markForCheck();
     });
   }
 
   startEdit(tx: Transaction): void {
     this.editing = tx;
+    this.cdr.markForCheck();
   }
 
   save(tx: Transaction): void {
@@ -41,6 +48,7 @@ export class AppComponent implements OnInit {
 
     req$.subscribe(() => {
       this.editing = null;
+      this.cdr.markForCheck();
       this.reload();
     });
   }
@@ -51,5 +59,6 @@ export class AppComponent implements OnInit {
 
   cancelEdit(): void {
     this.editing = null;
+    this.cdr.markForCheck();
   }
 }

@@ -1,9 +1,9 @@
 export type TransactionType = 'income' | 'expense';
 
 export interface Transaction {
-  _id?: string;      // backend (Mongo)
+  _id?: string;
   title: string;
-  amount: number;
-  type: TransactionType;
+  amountCents: number;   // integer
+  type: 'income' | 'expense';
   date: string;
 }

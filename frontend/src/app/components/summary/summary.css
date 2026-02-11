@@ -1,0 +1,76 @@
+.summary {
+  padding: 14px;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+}
+
+.summary-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.summary-title {
+  margin: 0;
+}
+
+.summary-balance .label {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.summary-balance .value {
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-balance .value.pos {
+  color: #2e7d32;
+}
+
+.summary-balance .value.neg {
+  color: #c62828;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.metric {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.metric .label {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
+
+.metric .value {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.metric.income .value {
+  color: #2e7d32;
+}
+
+.metric.expense .value {
+  color: #c62828;
+}
+
+.chart {
+  grid-column: 1 / -1;
+  height: 220px;
+  padding: 10px 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
